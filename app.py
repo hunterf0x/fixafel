@@ -5,7 +5,6 @@ import os
 
 
 
-
 load_dotenv()
 
 from google.oauth2 import service_account
@@ -43,6 +42,7 @@ db = firestore.Client(project=GCLOUD_PROJECT, credentials=credentials)
 
 
 from src.infrastructure.config.config import Config
+from src.infrastructure.http.error_handler import handle_exception
 from src.container import Container
 
 
@@ -50,6 +50,7 @@ def create_app():
     main = Flask(__name__)
 
     main.register_blueprint(Container.trx_controller().routes(), url_prefix='/trx')
+    main.register_error_handler(Exception, handle_exception)
 
     main.debug = True
     return main

@@ -12,9 +12,10 @@ from src.infrastructure.http.base_controller import BaseController
 
 
 class TrxController(BaseController):
-    def __init__(self, trx_service: GetTransactionUseCase):
+    def __init__(self, get_transaction: GetTransactionUseCase):
+        self.__routes = None
         self.register_routes()
-        self.__trx_service = trx_service
+        self.__trx_service = get_transaction
 
     def test(self):
         return 'Hello World'
