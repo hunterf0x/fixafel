@@ -4,7 +4,7 @@ from src.infrastructure.persistence.database_parser import DatabaseParser
 
 class FirestoreParser(DatabaseParser):
     def to_domain_object(self, database_object: dict) -> Transaction:
-        print(f"database: {database_object}")
+        #print(f"database: {database_object}")
         return Transaction.build(
             database_object['TrxNro'],
             database_object['PK_Store'],
