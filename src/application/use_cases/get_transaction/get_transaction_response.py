@@ -1,11 +1,25 @@
+"""This module contains the GetTransactionResponse class, which encapsulates the response for a transaction."""
+
 from src.application.application_response import ApplicationResponse
 
 
 class GetTransactionResponse(ApplicationResponse):
+    """Encapsulates the response for a transaction."""
+    # pylint: disable=too-few-public-methods
     def __init__(self, trx):
+        """Initializes the GetTransactionResponse with the given transaction.
+
+        Args:
+            trx: The transaction object.
+        """
         self.transaction = trx
 
     def to_json(self) -> dict:
+        """Converts the transaction to a JSON-serializable dictionary.
+
+        Returns:
+            dict: The JSON-serializable dictionary representing the transaction.
+        """
         return {
             "TrxNro": self.transaction.trxNro,
             "PK_Store": self.transaction.pk_store,
