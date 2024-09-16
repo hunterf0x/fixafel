@@ -1,4 +1,5 @@
 """This module contains the GetTransactionUseCase class, which handles the logic for retrieving a transaction."""
+
 from src.application.application_service import ApplicationService
 from src.application.use_cases.get_transaction.get_transaction_command import GetTransactionCommand
 from src.application.use_cases.get_transaction.get_transaction_response import GetTransactionResponse
@@ -9,6 +10,7 @@ from src.domain.transaction import Transaction
 
 class GetTransactionUseCase(ApplicationService):
     """Handles the logic for retrieving a transaction."""
+    # pylint: disable=too-few-public-methods
     def __init__(self, trx_repository: TrxRepository):
         self.trx_repository = trx_repository
 

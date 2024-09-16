@@ -1,5 +1,4 @@
 """This module defines the TrxNotFoundError class for handling transaction not found errors."""
-from typing import Callable, Any
 
 from src.domain.core.application_error import ApplicationError
 
@@ -8,4 +7,3 @@ class TrxNotFoundError(ApplicationError):
     # pylint: disable=too-few-public-methods
     def __init__(self, message):
         super().__init__(message)
-

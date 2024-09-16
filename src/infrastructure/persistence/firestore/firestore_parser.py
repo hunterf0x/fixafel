@@ -1,10 +1,20 @@
+"""This module defines the FirestoreParser class for parsing Firestore database objects."""
+
 from src.domain.transaction import Transaction
 from src.infrastructure.persistence.database_parser import DatabaseParser
 
-
 class FirestoreParser(DatabaseParser):
+    """Class for parsing Firestore database objects."""
+
     def to_domain_object(self, database_object: dict) -> Transaction:
-        #print(f"database: {database_object}")
+        """Convert a Firestore database object to a Transaction domain object.
+
+        Args:
+            database_object (dict): The Firestore database object to convert.
+
+        Returns:
+            Transaction: The Transaction domain object.
+        """
         return Transaction.build(
             database_object['TrxNro'],
             database_object['PK_Store'],
@@ -16,8 +26,15 @@ class FirestoreParser(DatabaseParser):
             database_object['trxDocType']
         )
 
-
     def to_database_object(self, domain: Transaction) -> dict:
+        """Convert a Transaction domain object to a Firestore database object.
+
+        Args:
+            domain (Transaction): The Transaction domain object to convert.
+
+        Returns:
+            dict: The Firestore database object.
+        """
         return {
             'TrxNro': domain.trxNro,
             'PK_Store': domain.pk_store,
