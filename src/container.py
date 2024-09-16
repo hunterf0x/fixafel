@@ -1,10 +1,13 @@
-"""IoC container module."""
+"""This module defines the IoC container for the application.
+
+It uses the `dependency_injector` library to manage the dependencies and
+provide singleton instances of various components such as handlers, parsers,
+repositories, use cases, and controllers.
+"""
+
 import os
-
 from dependency_injector import containers, providers
-
-from src.application.use_cases.get_list_transactions.get_list_transactions import (
-    GetListTransactionsUseCase)
+from src.application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
 from src.application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
 from src.infrastructure.config.config import app_config
 from src.infrastructure.http.trx_controller import TrxController
@@ -14,7 +17,16 @@ from src.infrastructure.persistence.firestore.firestore_repository import Firest
 
 
 class Container(containers.DeclarativeContainer):
-    """IoC container for the application."""
+    """IoC container for managing application dependencies.
+
+    This container provides singleton instances of the following components:
+    - FirestoreHandler: Handles database operations.
+    - FirestoreParser: Parses Firestore data.
+    - FirestoreRepository: Repository for Firestore operations.
+    - GetTransactionUseCase: Use case for getting a single transaction.
+    - GetListTransactionsUseCase: Use case for getting a list of transactions.
+    - TrxController: Controller for transaction-related HTTP endpoints.
+    """
     database_handler = providers.Singleton(
         FirestoreHandler,
         config=app_config[os.getenv('ENV')]
