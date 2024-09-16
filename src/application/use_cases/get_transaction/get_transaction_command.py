@@ -1,15 +1,34 @@
+"""This module contains the GetTransactionCommand class, which encapsulates the command to get a transaction."""
+
 from src.application.application_command import ApplicationCommand
 
 
 class GetTransactionCommand(ApplicationCommand):
-    def __init__(self, id: str, attribute: str):
-        self.__id = id
+    """Encapsulates the command to get a transaction."""
+    def __init__(self, transaction_id: str, attribute: str):
+        """Initializes the GetTransactionCommand with the given transaction ID and attribute.
+
+        Args:
+            transaction_id (str): The ID of the transaction.
+            attribute (str): The attribute of the transaction.
+        """
+        self.__transaction_id = transaction_id
         self.__attribute = attribute
 
     @property
     def id(self) -> str:
-        return self.__id
+        """Gets the transaction ID.
+
+        Returns:
+            str: The transaction ID.
+        """
+        return self.__transaction_id
 
     @property
     def attr(self) -> str:
+        """Gets the transaction attribute.
+
+        Returns:
+            str: The transaction attribute.
+        """
         return self.__attribute

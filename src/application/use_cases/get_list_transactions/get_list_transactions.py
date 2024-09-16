@@ -1,4 +1,7 @@
-from src.application.appliaction_service import ApplicationService
+"""This module contains the GetListTransactionsUseCase class,
+which handles the logic for retrieving a list of transactions."""
+
+from src.application.application_service import ApplicationService
 from src.application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
 from src.application.use_cases.get_list_transactions.get_list_transactions_response import GetListTransactionsResponse
 from src.domain.trx_not_found_error import TrxNotFoundError
@@ -7,14 +10,30 @@ from src.domain.transaction import Transaction
 
 
 class GetListTransactionsUseCase(ApplicationService):
+    """Handles the logic for retrieving a list of transactions."""
+    # pylint: disable=too-few-public-methods
     def __init__(self, trx_repository: TrxRepository):
+        """Initializes the GetListTransactionsUseCase with the given transaction repository.
+
+        Args:
+            trx_repository (TrxRepository): The repository to retrieve transactions from.
+        """
         self.trx_repository = trx_repository
 
     def execute(self, command: GetListTransactionsCommand) -> GetListTransactionsResponse:
+        """Executes the use case to retrieve a list of transactions based on the given command.
+
+        Args:
+            command (GetListTransactionsCommand): The command containing the list of transaction IDs.
+
+        Returns:
+            GetListTransactionsResponse: The response containing the list of retrieved transactions.
+
+        Raises:
+            TrxNotFoundError: If no transactions are found.
+        """
         transactions: list[Transaction] = self.trx_repository.get_list(command.trx_list)
         print(f"TrxUseCases.execute: {transactions}")
-        #print(command.attr)
-
 
         if transactions is None:
             raise TrxNotFoundError('Trx not found')
