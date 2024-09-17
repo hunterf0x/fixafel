@@ -48,6 +48,7 @@ class TrxController(BaseController):
                 print(e)
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
+
     def get_trx_route(self, trx_id: str):
         """Handle the route for getting a single transaction.
 
