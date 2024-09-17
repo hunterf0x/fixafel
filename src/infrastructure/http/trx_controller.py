@@ -5,6 +5,8 @@ from typing import Any
 
 from flask import Blueprint, request, Response
 
+from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
+from src.infrastructure.http.validator.request_validator import validate_request_body
 from src.application.application_response import ApplicationResponse
 from src.application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
 from src.application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
@@ -29,6 +31,7 @@ class TrxController(BaseController):
         self.__get_transaction = get_transaction
         self.__get_list_transactions = get_list_transactions
 
+    @validate_request_body(request, request_contract=GetTransactionsRequestContract)
     def get_trxs_route(self):
         """Handle the route for getting a list of transactions.
 
@@ -43,7 +46,7 @@ class TrxController(BaseController):
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
                 print(e)
-                return Response(response=json.dumps({'message': e.message}), status=404, mimetype='application/json')
+                return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
     def get_trx_route(self, trx_id: str):
         """Handle the route for getting a single transaction.
@@ -61,7 +64,7 @@ class TrxController(BaseController):
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
-                return Response(response=json.dumps({'message': e.message}), status=404, mimetype='application/json')
+                return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
     def register_routes(self):

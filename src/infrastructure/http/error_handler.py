@@ -13,9 +13,7 @@ def handle_exception(e: Exception) -> Response:
         Response: A Flask response object with the error details.
     """
     error_message = e.args[0] if len(e.args) > 0 else "Internal server error"
-    print(f"Error: {error_message}")
     if isinstance(e, HTTPException):
-        print(f"HTTPException: {e}")
         return Response(
             response=json.dumps({
                 "message": e.description,
