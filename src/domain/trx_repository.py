@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 from typing import Optional
-from src.domain.transaction import Transaction
+from domain.transaction import Transaction
 
 class TrxRepository:
     """Abstract base class for transaction repository operations."""

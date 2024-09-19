@@ -1,7 +1,7 @@
 """This module defines the FirestoreParser class for parsing Firestore database objects."""
 
-from src.domain.transaction import Transaction
-from src.infrastructure.persistence.database_parser import DatabaseParser
+from domain.transaction import Transaction
+from infrastructure.persistence.database_parser import DatabaseParser
 
 class FirestoreParser(DatabaseParser):
     """Class for parsing Firestore database objects."""

@@ -1,6 +1,6 @@
 """This module contains the GetTransactionCommand class, which encapsulates the command to get a transaction."""
 
-from src.application.application_command import ApplicationCommand
+from application.application_command import ApplicationCommand
 
 
 class GetTransactionCommand(ApplicationCommand):

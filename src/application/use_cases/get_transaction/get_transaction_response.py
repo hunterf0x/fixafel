@@ -1,6 +1,6 @@
 """This module contains the GetTransactionResponse class, which encapsulates the response for a transaction."""
 
-from src.application.application_response import ApplicationResponse
+from application.application_response import ApplicationResponse
 
 
 class GetTransactionResponse(ApplicationResponse):

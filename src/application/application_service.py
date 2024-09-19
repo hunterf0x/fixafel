@@ -1,8 +1,8 @@
 """This module defines the ApplicationService abstract base class."""
 
 from abc import ABC, abstractmethod
-from src.application.application_command import ApplicationCommand
-from src.application.application_response import ApplicationResponse
+from application.application_command import ApplicationCommand
+from application.application_response import ApplicationResponse
 
 
 class ApplicationService(ABC):

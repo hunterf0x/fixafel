@@ -1,12 +1,12 @@
 """This module contains the GetListTransactionsUseCase class,
 which handles the logic for retrieving a list of transactions."""
 
-from src.application.application_service import ApplicationService
-from src.application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
-from src.application.use_cases.get_list_transactions.get_list_transactions_response import GetListTransactionsResponse
-from src.domain.trx_not_found_error import TrxNotFoundError
-from src.domain.trx_repository import TrxRepository
-from src.domain.transaction import Transaction
+from application.application_service import ApplicationService
+from application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
+from application.use_cases.get_list_transactions.get_list_transactions_response import GetListTransactionsResponse
+from domain.trx_not_found_error import TrxNotFoundError
+from domain.trx_repository import TrxRepository
+from domain.transaction import Transaction
 
 
 class GetListTransactionsUseCase(ApplicationService):

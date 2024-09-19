@@ -1,6 +1,6 @@
 """This module defines the Transaction class for handling transaction entities."""
 
-from src.domain.core.domain_entity import DomainEntity
+from domain.core.domain_entity import DomainEntity
 
 class Transaction(DomainEntity):
     """Represents a transaction entity."""

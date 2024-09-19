@@ -6,14 +6,14 @@ from typing import Any
 from flask import Blueprint, request, Response
 
 from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
-from src.infrastructure.http.validator.request_validator import validate_request_body
-from src.application.application_response import ApplicationResponse
-from src.application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
-from src.application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
-from src.application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
-from src.application.use_cases.get_transaction.get_transaction_command import GetTransactionCommand
-from src.domain.trx_not_found_error import TrxNotFoundError
-from src.infrastructure.http.base_controller import BaseController
+from infrastructure.http.validator.request_validator import validate_request_body
+from infrastructure.http.base_controller import BaseController
+from application.application_response import ApplicationResponse
+from application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
+from application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
+from application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
+from application.use_cases.get_transaction.get_transaction_command import GetTransactionCommand
+from domain.trx_not_found_error import TrxNotFoundError
 
 
 class TrxController(BaseController):

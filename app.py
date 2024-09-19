@@ -2,9 +2,9 @@
 
 from flask import Flask
 from dotenv import load_dotenv
-from src.infrastructure.config.config import Config
-from src.infrastructure.http.error_handler import handle_exception
-from src.container import Container
+from infrastructure.config.config import Config
+from infrastructure.http.error_handler import handle_exception
+from container import Container
 
 load_dotenv()
 

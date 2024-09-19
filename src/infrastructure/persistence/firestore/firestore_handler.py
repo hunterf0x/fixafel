@@ -3,8 +3,8 @@
 from typing import Any
 from google.cloud import firestore
 from google.oauth2 import service_account
-from src.infrastructure.config.config import Config
-from src.infrastructure.persistence.database_handler import DatabaseHandler
+from infrastructure.config.config import Config
+from infrastructure.persistence.database_handler import DatabaseHandler
 
 # pylint: disable=too-few-public-methods
 class FirestoreHandler(DatabaseHandler):

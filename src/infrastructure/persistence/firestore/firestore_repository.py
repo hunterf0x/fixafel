@@ -5,10 +5,10 @@ from typing import Optional
 
 from google.cloud.firestore_v1 import FieldFilter
 
-from src.domain.trx_repository import TrxRepository
-from src.domain.transaction import Transaction
-from src.infrastructure.persistence.database_handler import DatabaseHandler
-from src.infrastructure.persistence.database_parser import DatabaseParser
+from domain.trx_repository import TrxRepository
+from domain.transaction import Transaction
+from infrastructure.persistence.database_handler import DatabaseHandler
+from infrastructure.persistence.database_parser import DatabaseParser
 
 
 class FirestoreRepository(TrxRepository):

@@ -1,7 +1,7 @@
 """This module contains the GetListTransactionsCommand class,
 which encapsulates the command to get a list of transactions."""
 
-from src.application.application_command import ApplicationCommand
+from application.application_command import ApplicationCommand
 
 
 class GetListTransactionsCommand(ApplicationCommand):

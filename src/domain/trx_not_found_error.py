@@ -1,6 +1,6 @@
 """This module defines the TrxNotFoundError class for handling transaction not found errors."""
 
-from src.domain.core.application_error import ApplicationError
+from domain.core.application_error import ApplicationError
 
 class TrxNotFoundError(ApplicationError):
     """Exception raised when a transaction is not found."""

@@ -1,7 +1,7 @@
 """This module defines the DatabaseParser abstract base class for parsing database objects."""
 
 from abc import ABC, abstractmethod
-from src.domain.core.domain_entity import DomainEntity
+from domain.core.domain_entity import DomainEntity
 
 class DatabaseParser(ABC):
     """Abstract base class for database parsers."""
