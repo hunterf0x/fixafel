@@ -5,6 +5,7 @@ from typing import Optional
 
 from google.cloud.firestore_v1 import FieldFilter
 
+from domain.core.domain_entity import DomainEntity
 from domain.trx_repository import TrxRepository
 from domain.transaction import Transaction
 from infrastructure.persistence.database_handler import DatabaseHandler
@@ -50,7 +51,7 @@ class FirestoreRepository(TrxRepository):
         data: dict = {}
         try:
             documents = self.__db.collection('salesTrxCo').where(filter=FieldFilter(attr, '==', trx_id)).limit(1).get()
-            print(f"Documentos encontrados: {documents}")
+            print(f"Documentos encontradosaa: {documents}")
 
             if not documents:
                 return None
@@ -95,3 +96,13 @@ class FirestoreRepository(TrxRepository):
         print(f"Transacciones encontradas: {transactions}")
 
         return None if not transactions else transactions
+
+    def update(self, doc_id, attributes) -> Transaction:
+        doc_ref = self.__db.collection('salesTrxCo').document(doc_id)
+        try:
+            doc_ref.update(attributes)
+        except Exception as e:
+            print(f"Error al actualizar la transacción: {e}")
+
+        transaction = self.__trx_parser.to_domain_object(doc_ref.get().to_dict())
+        return transaction

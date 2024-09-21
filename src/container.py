@@ -9,6 +9,7 @@ import os
 from dependency_injector import containers, providers
 from application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
 from application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
+from application.use_cases.reinject_transactions.reinject_transactions import ReinjectTransactionsUseCase
 from infrastructure.config.config import app_config
 from infrastructure.http.trx_controller import TrxController
 from infrastructure.persistence.firestore.firestore_handler import FirestoreHandler
@@ -51,7 +52,12 @@ class Container(containers.DeclarativeContainer):
         trx_repository
     )
 
+    reinject_transactions_use_case = providers.Singleton(
+        ReinjectTransactionsUseCase,
+        trx_repository
+    )
+
     trx_controller = providers.Singleton(
         TrxController,
-        get_transaction_use_case, get_list_transactions_use_case
+        get_transaction_use_case, get_list_transactions_use_case, reinject_transactions_use_case
     )

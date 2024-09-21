@@ -16,7 +16,7 @@ def create_app():
     """
     main = Flask(__name__)
 
-    main.register_blueprint(Container.trx_controller().routes(), url_prefix='/trx')
+    main.register_blueprint(Container.trx_controller().routes(), url_prefix='/transactions')
     main.register_error_handler(Exception, handle_exception)
 
     main.debug = True

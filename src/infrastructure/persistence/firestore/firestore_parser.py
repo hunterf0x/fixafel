@@ -16,6 +16,7 @@ class FirestoreParser(DatabaseParser):
             Transaction: The Transaction domain object.
         """
         return Transaction.build(
+            database_object['id'],
             database_object['TrxNro'],
             database_object['PK_Store'],
             database_object['PK_Terminal'],
@@ -23,7 +24,8 @@ class FirestoreParser(DatabaseParser):
             database_object['body'],
             database_object['trxRcp'],
             database_object['status'],
-            database_object['trxDocType']
+            database_object['trxDocType'],
+            database_object.get('note', "")
         )
 
     def to_database_object(self, domain: Transaction) -> dict:

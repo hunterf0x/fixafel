@@ -20,6 +20,7 @@ class TrxRepository:
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_list(self, trx_list: list) -> list[Transaction] | None:
         """Gets a list of transactions based on the provided list of IDs.
 
@@ -29,4 +30,9 @@ class TrxRepository:
         Returns:
             list[Transaction] | None: The list of found transactions or None if none are found.
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    def update(self, doc_id: str, attributes: dict ) -> Transaction:
+
         raise NotImplementedError

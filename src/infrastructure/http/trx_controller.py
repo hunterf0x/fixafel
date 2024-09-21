@@ -5,6 +5,8 @@ from typing import Any
 
 from flask import Blueprint, request, Response
 
+from application.use_cases.reinject_transactions.reinject_transactions import ReinjectTransactionsUseCase
+from application.use_cases.reinject_transactions.reinject_transactions_command import ReinjectTransactionsCommand
 from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
 from infrastructure.http.validator.request_validator import validate_request_body
 from infrastructure.http.base_controller import BaseController
@@ -19,7 +21,7 @@ from domain.trx_not_found_error import TrxNotFoundError
 class TrxController(BaseController):
     """Controller for handling transaction-related HTTP routes."""
 
-    def __init__(self, get_transaction: GetTransactionUseCase, get_list_transactions: GetListTransactionsUseCase):
+    def __init__(self, get_transaction: GetTransactionUseCase, get_list_transactions: GetListTransactionsUseCase, reinject_transactions: ReinjectTransactionsUseCase):
         """Initialize the TrxController with the given use cases.
 
         Args:
@@ -30,6 +32,7 @@ class TrxController(BaseController):
         self.register_routes()
         self.__get_transaction = get_transaction
         self.__get_list_transactions = get_list_transactions
+        self.__reinject_transactions = reinject_transactions
 
     @validate_request_body(request, request_contract=GetTransactionsRequestContract)
     def get_trxs_route(self):
@@ -68,11 +71,28 @@ class TrxController(BaseController):
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
+    def reinject_trxs_route(self):
+        """Handle the route for reinjecting a list of transactions.
+
+        Returns:
+            Response: A Flask response object with the list of reinjected transactions.
+        """
+        body = request.get_json()
+        try:
+            command = ReinjectTransactionsCommand(body['selectedTransactions'])
+            response: ApplicationResponse = self.__reinject_transactions.execute(command)
+            return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
+        except Exception as e:
+            if isinstance(e, TrxNotFoundError):
+                return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
+            raise e
+
     def register_routes(self):
         """Register the routes for the TrxController."""
         self.__routes = Blueprint('trx_controller', __name__)
-        self.__routes.add_url_rule('/<trx_id>', 'get_trx_route', self.get_trx_route, methods=['GET'])
-        self.__routes.add_url_rule('', 'get_trxs_route', self.get_trxs_route, methods=['POST'])
+        self.__routes.add_url_rule('/get/<trx_id>', 'get_trx_route', self.get_trx_route, methods=['GET'])
+        self.__routes.add_url_rule('/get_list', 'get_trxs_route', self.get_trxs_route, methods=['POST'])
+        self.__routes.add_url_rule('/reinject', 'reinject_trxs_route', self.reinject_trxs_route, methods=['POST'])
 
     def routes(self) -> Any:
         """Return the routes for the TrxController.
