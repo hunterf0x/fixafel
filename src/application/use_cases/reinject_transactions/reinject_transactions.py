@@ -16,7 +16,7 @@ class ReinjectTransactionsUseCase(ApplicationService):
         result = []
 
         for transaction in transactions:
-            print(transaction.get('id'))
+            print(transaction.get('_id'))
             fields_to_update = {}
             sale_updated = False
             payment_updated = False
@@ -39,7 +39,7 @@ class ReinjectTransactionsUseCase(ApplicationService):
 
             fields_to_update = {
                 'status': 'APPROVED',
-                'notes': 'TRXs Pending requested by GIK-17604'
+                'note': 'TRXs Pending requested by GIK-17604'
             }
 
             if sale_updated or payment_updated:
