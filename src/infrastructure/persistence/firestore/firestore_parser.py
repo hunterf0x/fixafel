@@ -16,6 +16,7 @@ class FirestoreParser(DatabaseParser):
             Transaction: The Transaction domain object.
         """
         return Transaction.build(
+            database_object['_id'],
             database_object['id'],
             database_object['TrxNro'],
             database_object['PK_Store'],
