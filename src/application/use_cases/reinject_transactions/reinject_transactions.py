@@ -7,8 +7,9 @@ from domain.trx_repository import TrxRepository
 
 
 class ReinjectTransactionsUseCase(ApplicationService):
-    def __init__(self, transaction_repository: TrxRepository):
+    def __init__(self, transaction_repository: TrxRepository, logger):
         self.transaction_repository = transaction_repository
+        self.logger = logger
 
     def execute(self, command: ReinjectTransactionsCommand) -> ReinjectedTransactionsResponse:
         transactions = command.transaction_list

@@ -1,5 +1,6 @@
 """This module defines the FirestoreRepository class for handling Firestore database operations."""
 
+import logging
 from types import NoneType
 from typing import Optional
 
@@ -14,7 +15,7 @@ from infrastructure.persistence.database_parser import DatabaseParser
 class FirestoreRepository(TrxRepository):
     """Class for handling Firestore database operations."""
 
-    def __init__(self, database_handler: DatabaseHandler, database_parser: DatabaseParser):
+    def __init__(self, database_handler: DatabaseHandler, database_parser: DatabaseParser, logger: logging.Logger):
         """Initialize the FirestoreRepository with the given database handler and parser.
 
         Args:
@@ -23,6 +24,7 @@ class FirestoreRepository(TrxRepository):
         """
         self.__db = database_handler.get_database()
         self.__trx_parser: DatabaseParser = database_parser
+        self.logger = logger
 
     @staticmethod
     def chunk_list(data, chunk_size):
@@ -50,7 +52,6 @@ class FirestoreRepository(TrxRepository):
         data: dict = {}
         try:
             documents = self.__db.collection('salesTrxCo').where(filter=FieldFilter(attr, '==', trx_id)).limit(1).get()
-            print(f"Documentos encontradosaa: {documents}")
 
             if not documents:
                 return None
@@ -61,7 +62,7 @@ class FirestoreRepository(TrxRepository):
                 print(f"doc: {doc}")
                 print(f"Datos del documento: {data.get('_id')}")
         except Exception  as e:
-            print(f"Error al buscar la transacción: {e}")
+            self.logger.exception("Error when searching for transaction: %s", e, exc_info=True)
 
         return None if isinstance(data, NoneType) else self.__trx_parser.to_domain_object(data)
 

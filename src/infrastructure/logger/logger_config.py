@@ -1,0 +1,43 @@
+import logging
+from  colorlog import ColoredFormatter
+import sys
+import os
+
+from infrastructure.logger.logger_formatter import CustomJsonFormatter
+
+
+def configure_logging():
+
+    date_format = "%Y-%m-%d %H:%M:%S"
+    env = os.getenv('ENV', 'development')
+
+    if env == 'production':
+        log_format = '%(asctime)s %(levelname)s %(name)s %(funcName)s %(message)s'
+        formatter = CustomJsonFormatter(
+            fmt=log_format,
+            rename_fields={"asctime": "dateTime", 'levelname': 'level', 'funcName': 'function', 'name': 'logger', "message": "msg"},
+            datefmt=date_format
+        )
+    else:
+        log_format = "%(asctime)s [%(log_color)s%(levelname)s%(reset)s] - %(name)s - %(message)s"
+        formatter = ColoredFormatter(
+            log_format,
+            datefmt=date_format,
+            log_colors={
+                'DEBUG': 'cyan',
+                'INFO': 'green',
+                'WARNING': 'yellow',
+                'ERROR': 'red',
+                'CRITICAL': 'bold_red'
+            }
+        )
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(formatter)
+
+    logging.basicConfig(level=logging.DEBUG, handlers=[handler])
+
+def get_logger(name: str = 'DefaultLogger') -> logging.Logger:
+    logger = logging.getLogger(name)
+    return logger

@@ -1,4 +1,5 @@
 """This module defines the error handler for HTTP exceptions."""
+import logging
 
 from werkzeug.exceptions import HTTPException
 from flask import Response, json
@@ -14,6 +15,7 @@ def handle_exception(e: Exception) -> Response:
     """
     error_message = e.args[0] if len(e.args) > 0 else "Internal server error"
     if isinstance(e, HTTPException):
+        logging.error(e)
         return Response(
             response=json.dumps({
                 "message": e.description,
@@ -22,6 +24,7 @@ def handle_exception(e: Exception) -> Response:
             status=e.code,
             mimetype='application/json'
         )
+    logging.error(error_message)
     return Response(
         response=json.dumps({
             "message": error_message,

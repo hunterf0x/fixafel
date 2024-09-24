@@ -12,13 +12,14 @@ from domain.transaction import Transaction
 class GetListTransactionsUseCase(ApplicationService):
     """Handles the logic for retrieving a list of transactions."""
     # pylint: disable=too-few-public-methods
-    def __init__(self, trx_repository: TrxRepository):
+    def __init__(self, trx_repository: TrxRepository, logger):
         """Initializes the GetListTransactionsUseCase with the given transaction repository.
 
         Args:
             trx_repository (TrxRepository): The repository to retrieve transactions from.
         """
         self.trx_repository = trx_repository
+        self.logger = logger
 
     def execute(self, command: GetListTransactionsCommand) -> GetListTransactionsResponse:
         """Executes the use case to retrieve a list of transactions based on the given command.

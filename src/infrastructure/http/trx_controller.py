@@ -1,27 +1,29 @@
 """This module defines the TrxController class for handling transaction-related HTTP routes."""
 
 import json
+import logging
 from typing import Any
 
 from flask import Blueprint, request, Response
 
 from application.use_cases.reinject_transactions.reinject_transactions import ReinjectTransactionsUseCase
 from application.use_cases.reinject_transactions.reinject_transactions_command import ReinjectTransactionsCommand
-from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
-from infrastructure.http.validator.request_validator import validate_request_body
-from infrastructure.http.base_controller import BaseController
 from application.application_response import ApplicationResponse
 from application.use_cases.get_list_transactions.get_list_transactions import GetListTransactionsUseCase
 from application.use_cases.get_list_transactions.get_list_transactions_command import GetListTransactionsCommand
 from application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
 from application.use_cases.get_transaction.get_transaction_command import GetTransactionCommand
+from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
+from infrastructure.http.validator.request_validator import validate_request_body
+from infrastructure.http.base_controller import BaseController
+
 from domain.trx_not_found_error import TrxNotFoundError
 
 
 class TrxController(BaseController):
     """Controller for handling transaction-related HTTP routes."""
 
-    def __init__(self, get_transaction: GetTransactionUseCase, get_list_transactions: GetListTransactionsUseCase, reinject_transactions: ReinjectTransactionsUseCase):
+    def __init__(self, get_transaction: GetTransactionUseCase, get_list_transactions: GetListTransactionsUseCase, reinject_transactions: ReinjectTransactionsUseCase, logger: logging.Logger):
         """Initialize the TrxController with the given use cases.
 
         Args:
@@ -33,6 +35,7 @@ class TrxController(BaseController):
         self.__get_transaction = get_transaction
         self.__get_list_transactions = get_list_transactions
         self.__reinject_transactions = reinject_transactions
+        self.logger = logger
 
     @validate_request_body(request, request_contract=GetTransactionsRequestContract)
     def get_trxs_route(self):
@@ -48,7 +51,7 @@ class TrxController(BaseController):
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
-                print(e)
+                self.logger.error(e)
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
@@ -68,6 +71,7 @@ class TrxController(BaseController):
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
+                self.logger.exception(e, exc_info=True)
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
@@ -84,6 +88,7 @@ class TrxController(BaseController):
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
+                self.logger.error(e)
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 

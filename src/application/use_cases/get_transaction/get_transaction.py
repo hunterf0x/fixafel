@@ -11,8 +11,9 @@ from domain.transaction import Transaction
 class GetTransactionUseCase(ApplicationService):
     """Handles the logic for retrieving a transaction."""
     # pylint: disable=too-few-public-methods
-    def __init__(self, trx_repository: TrxRepository):
+    def __init__(self, trx_repository: TrxRepository, logger):
         self.trx_repository = trx_repository
+        self.logger = logger
 
     def execute(self, command: GetTransactionCommand) -> GetTransactionResponse:
         """Executes the use case to retrieve a transaction based on the given command.
@@ -27,7 +28,6 @@ class GetTransactionUseCase(ApplicationService):
             TrxNotFoundError: If the transaction is not found.
         """
         trx: Transaction = self.trx_repository.find_one(command.id, command.attr)
-        print(f"TrxUseCases.execute: {trx}")
 
         if trx is None:
             raise TrxNotFoundError('Trx not found')
