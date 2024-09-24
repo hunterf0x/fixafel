@@ -58,9 +58,9 @@ class FirestoreRepository(TrxRepository):
 
             for doc in documents:
                 data = doc.to_dict()
-                data['_id'] = doc.id
+                data['doc_id'] = doc.id
                 print(f"doc: {doc}")
-                print(f"Datos del documento: {data.get('_id')}")
+                print(f"Datos del documento: {data.get('doc_id')}")
         except Exception  as e:
             self.logger.exception("Error when searching for transaction: %s", e, exc_info=True)
 
@@ -91,7 +91,7 @@ class FirestoreRepository(TrxRepository):
 
                 for doc in documents:
                     data = doc.to_dict()
-                    data['_id'] = doc.id
+                    data['doc_id'] = doc.id
                     transactions.append(self.__trx_parser.to_domain_object(data))
             except Exception as e:
                 print(f"Error al buscar la transacción: {e}")
@@ -99,6 +99,15 @@ class FirestoreRepository(TrxRepository):
         return None if not transactions else transactions
 
     def update(self, doc_id, attributes) -> Transaction | None:
+        """Update a transaction document with new attributes.
+
+        Args:
+            doc_id (str): The ID of the document to update.
+            attributes (dict): The attributes to update in the document.
+
+        Returns:
+            Transaction | None: The updated transaction or None if the document does not exist.
+        """
         doc_ref = self.__db.collection('salesTrxCo').document(doc_id)
         try:
             if not doc_ref.get().exists:
@@ -106,7 +115,7 @@ class FirestoreRepository(TrxRepository):
                 return None
             doc_ref.update(attributes)
             trx = doc_ref.get().to_dict()
-            trx['_id'] = doc_ref.id
+            trx['_doc_id'] = doc_ref.id
             print(f"Transacción actualizada: {trx}")
         except Exception as e:
             print(f"Error al actualizar la transacción: {e}")

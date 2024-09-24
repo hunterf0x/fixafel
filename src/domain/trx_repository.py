@@ -33,6 +33,14 @@ class TrxRepository:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, doc_id: str, attributes: dict ) -> Transaction:
+    def update(self, doc_id: str, attributes: dict) -> Transaction:
+        """Updates a transaction with the given attributes.
 
+        Args:
+            doc_id (str): The document ID of the transaction to update.
+            attributes (dict): The attributes to update in the transaction.
+
+        Returns:
+            Transaction: The updated transaction.
+        """
         raise NotImplementedError

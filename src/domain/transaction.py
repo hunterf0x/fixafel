@@ -5,10 +5,10 @@ from domain.core.domain_entity import DomainEntity
 class Transaction(DomainEntity):
     """Represents a transaction entity."""
     # pylint: disable=too-many-instance-attributes, too-many-arguments
-    def __init__(self, _id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
+    def __init__(self, doc_id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
                  body: dict, trx_rcp: str, status: str, trx_doc_type: str, note: str ):
         super().__init__()
-        self._id = _id
+        self.doc_id = doc_id
         self.id = id
         self.trxNro = trx_nro
         self.pk_store = pk_store
@@ -22,7 +22,7 @@ class Transaction(DomainEntity):
 
 
     @classmethod
-    def build(cls, _id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
+    def build(cls, doc_id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
               body: dict, trx_rcp: str, status: str, trx_doc_type: str, note: str) -> 'Transaction':
         """Builds a Transaction instance.
 
@@ -41,7 +41,19 @@ class Transaction(DomainEntity):
         Returns:
             Transaction: A new Transaction instance.
         """
-        return cls(_id, id, trx_nro, pk_store, pk_terminal, pk_transaction_no, body, trx_rcp, status, trx_doc_type, note)
+        return cls(
+            doc_id,
+            id,
+            trx_nro,
+            pk_store,
+            pk_terminal,
+            pk_transaction_no,
+            body,
+            trx_rcp,
+            status,
+            trx_doc_type,
+            note
+        )
 
     def __eq__(self, other: 'Transaction') -> bool:
         """Checks equality between two Transaction instances.

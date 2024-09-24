@@ -1,13 +1,13 @@
-import logging
-from  colorlog import ColoredFormatter
+"""This module configures logging for the application."""
+
 import sys
 import os
-
+import logging
+from colorlog import ColoredFormatter
 from infrastructure.logger.logger_formatter import CustomJsonFormatter
 
-
 def configure_logging():
-
+    """Configures the logging settings based on the environment."""
     date_format = "%Y-%m-%d %H:%M:%S"
     env = os.getenv('ENV', 'development')
 
@@ -15,7 +15,9 @@ def configure_logging():
         log_format = '%(asctime)s %(levelname)s %(name)s %(funcName)s %(message)s'
         formatter = CustomJsonFormatter(
             fmt=log_format,
-            rename_fields={"asctime": "dateTime", 'levelname': 'level', 'funcName': 'function', 'name': 'logger', "message": "msg"},
+            rename_fields={
+                "asctime": "dateTime", 'levelname': 'level', 'funcName': 'function', 'name': 'logger', "message": "msg"
+            },
             datefmt=date_format
         )
     else:
@@ -39,5 +41,13 @@ def configure_logging():
     logging.basicConfig(level=logging.DEBUG, handlers=[handler])
 
 def get_logger(name: str = 'DefaultLogger') -> logging.Logger:
+    """Gets a logger instance with the specified name.
+
+    Args:
+        name (str): The name of the logger.
+
+    Returns:
+        logging.Logger: The logger instance.
+    """
     logger = logging.getLogger(name)
     return logger
