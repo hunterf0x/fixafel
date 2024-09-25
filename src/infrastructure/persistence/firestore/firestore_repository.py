@@ -39,11 +39,11 @@ class FirestoreRepository(TrxRepository):
         """
         return [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
 
-    def find_one(self, trx_id: str, attr: str) -> Optional[Transaction]:
+    def find_one(self, transaction_param: str, attr: str) -> Optional[Transaction]:
         """Find a single transaction by attribute.
 
         Args:
-            trx_id (str): The transaction ID to search for.
+            transaction_param (str): The transaction param to search for.
             attr (str): The attribute to search by.
 
         Returns:
@@ -51,7 +51,7 @@ class FirestoreRepository(TrxRepository):
         """
         data: dict = {}
         try:
-            documents = self.__db.collection('salesTrxCo').where(filter=FieldFilter(attr, '==', trx_id)).limit(1).get()
+            documents = self.__db.collection('salesTrxCo').where(filter=FieldFilter(attr, '==', transaction_param)).limit(1).get()
 
             if not documents:
                 return None
@@ -60,7 +60,8 @@ class FirestoreRepository(TrxRepository):
                 data = doc.to_dict()
                 data['doc_id'] = doc.id
                 print(f"doc: {doc}")
-                print(f"Datos del documento: {data.get('doc_id')}")
+                print(f"Datos del documento: {data.get('id')}")
+                print(f"Datos del documento: {data}")
         except Exception  as e:
             self.logger.exception("Error when searching for transaction: %s", e, exc_info=True)
 

@@ -5,24 +5,24 @@ from application.application_command import ApplicationCommand
 
 class GetTransactionCommand(ApplicationCommand):
     """Encapsulates the command to get a transaction."""
-    def __init__(self, transaction_id: str, attribute: str):
+    def __init__(self, transaction_find: str, attribute: str):
         """Initializes the GetTransactionCommand with the given transaction ID and attribute.
 
         Args:
-            transaction_id (str): The ID of the transaction.
+            transaction_find (str): The ID of the transaction.
             attribute (str): The attribute of the transaction.
         """
-        self.__transaction_id = transaction_id
+        self.__transaction_find = transaction_find
         self.__attribute = attribute
 
     @property
-    def id(self) -> str:
+    def param(self) -> str:
         """Gets the transaction ID.
 
         Returns:
             str: The transaction ID.
         """
-        return self.__transaction_id
+        return self.__transaction_find
 
     @property
     def attr(self) -> str:

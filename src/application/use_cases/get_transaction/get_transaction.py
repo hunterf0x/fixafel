@@ -19,7 +19,7 @@ class GetTransactionUseCase(ApplicationService):
         """Executes the use case to retrieve a transaction based on the given command.
 
         Args:
-            command (GetTransactionCommand): The command containing the transaction ID and attributes.
+            command (GetTransactionCommand): The command containing the transaction param and attributes.
 
         Returns:
             GetTransactionResponse: The response containing the retrieved transaction.
@@ -27,7 +27,7 @@ class GetTransactionUseCase(ApplicationService):
         Raises:
             TrxNotFoundError: If the transaction is not found.
         """
-        trx: Transaction = self.trx_repository.find_one(command.id, command.attr)
+        trx: Transaction = self.trx_repository.find_one(command.param, command.attr)
 
         if trx is None:
             raise TrxNotFoundError('Trx not found')

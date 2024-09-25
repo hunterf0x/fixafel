@@ -23,8 +23,8 @@ class GetListTransactionsResponse(ApplicationResponse):
         """
         return [
             {
-                "doc_id": trx.doc_id,
-                "id": trx.id,
+                "_id": trx.doc_id,
+                "id": trx.transaction_id,
                 "TrxNro": trx.trxNro,
                 "PK_Store": trx.pk_store,
                 "PK_Terminal": trx.pk_terminal,

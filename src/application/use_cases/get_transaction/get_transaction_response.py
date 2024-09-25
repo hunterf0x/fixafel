@@ -21,8 +21,8 @@ class GetTransactionResponse(ApplicationResponse):
             dict: The JSON-serializable dictionary representing the transaction.
         """
         return {
-            "doc_id": self.transaction.doc_id,
-            "id": self.transaction.id,
+            "_id": self.transaction.doc_id,
+            "id": self.transaction.transaction_id,
             "TrxNro": self.transaction.trxNro,
             "PK_Store": self.transaction.pk_store,
             "PK_Terminal": self.transaction.pk_terminal,

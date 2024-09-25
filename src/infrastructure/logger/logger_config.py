@@ -21,7 +21,7 @@ def configure_logging():
             datefmt=date_format
         )
     else:
-        log_format = "%(asctime)s [%(log_color)s%(levelname)s%(reset)s] - %(name)s - %(message)s"
+        log_format = "%(asctime)s [%(log_color)s%(levelname)s%(reset)s] - %(funcName)s - %(name)s - %(message)s"
         formatter = ColoredFormatter(
             log_format,
             datefmt=date_format,
@@ -38,7 +38,7 @@ def configure_logging():
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
 
-    logging.basicConfig(level=logging.DEBUG, handlers=[handler])
+    logging.basicConfig(level=logging.DEBUG, handlers=[handler], encoding='utf-8')
 
 def get_logger(name: str = 'DefaultLogger') -> logging.Logger:
     """Gets a logger instance with the specified name.

@@ -8,11 +8,11 @@ class TrxRepository:
     """Abstract base class for transaction repository operations."""
 
     @abstractmethod
-    def find_one(self, trx_id: str, attr: str) -> Optional[Transaction]:
+    def find_one(self, transaction_param: str, attr: str) -> Optional[Transaction]:
         """Finds a single transaction by its ID and attribute.
 
         Args:
-            trx_id (str): The ID of the transaction.
+            transaction_param (str): The param of the transaction search.
             attr (str): The attribute to filter the transaction.
 
         Returns:

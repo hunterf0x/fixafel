@@ -34,6 +34,7 @@ class GetListTransactionsUseCase(ApplicationService):
             TrxNotFoundError: If no transactions are found.
         """
         transactions: list[Transaction] = self.trx_repository.get_list(command.trx_list)
+        self.logger.info(f"TrxUseCases.execute: {transactions}")
         print(f"TrxUseCases.execute: {transactions}")
 
         if transactions is None:

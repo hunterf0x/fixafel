@@ -55,18 +55,18 @@ class TrxController(BaseController):
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
-    def get_trx_route(self, trx_id: str):
+    def get_trx_route(self, transaction_find: str):
         """Handle the route for getting a single transaction.
 
         Args:
-            trx_id (str): The ID of the transaction to retrieve.
+            transaction_find (str): The ID of the transaction to retrieve.
 
         Returns:
             Response: A Flask response object with the transaction details.
         """
         try:
             attribute = request.args.get('attribute') or 'TrxNro'
-            command = GetTransactionCommand(trx_id, attribute)
+            command = GetTransactionCommand(transaction_find, attribute)
             response: ApplicationResponse = self.__get_transaction.execute(command)
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
@@ -95,7 +95,7 @@ class TrxController(BaseController):
     def register_routes(self):
         """Register the routes for the TrxController."""
         self.__routes = Blueprint('trx_controller', __name__)
-        self.__routes.add_url_rule('/get/<trx_id>', 'get_trx_route', self.get_trx_route, methods=['GET'])
+        self.__routes.add_url_rule('/get/<transaction_find>', 'get_trx_route', self.get_trx_route, methods=['GET'])
         self.__routes.add_url_rule('/get_list', 'get_trxs_route', self.get_trxs_route, methods=['POST'])
         self.__routes.add_url_rule('/reinject', 'reinject_trxs_route', self.reinject_trxs_route, methods=['POST'])
 

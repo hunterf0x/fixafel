@@ -5,11 +5,12 @@ from domain.core.domain_entity import DomainEntity
 class Transaction(DomainEntity):
     """Represents a transaction entity."""
     # pylint: disable=too-many-instance-attributes, too-many-arguments
-    def __init__(self, doc_id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
-                 body: dict, trx_rcp: str, status: str, trx_doc_type: str, note: str ):
+    def __init__(self, doc_id: str, transaction_id: str, trx_nro: str, pk_store: str, pk_terminal: str,
+                 pk_transaction_no: int, body: dict, trx_rcp: str, status: str, trx_doc_type: str,
+                 note: str):
         super().__init__()
         self.doc_id = doc_id
-        self.id = id
+        self.transaction_id = transaction_id
         self.trxNro = trx_nro
         self.pk_store = pk_store
         self.pk_terminal = pk_terminal
@@ -22,12 +23,14 @@ class Transaction(DomainEntity):
 
 
     @classmethod
-    def build(cls, doc_id: str, id: str, trx_nro: str, pk_store: str, pk_terminal: str, pk_transaction_no: int,
-              body: dict, trx_rcp: str, status: str, trx_doc_type: str, note: str) -> 'Transaction':
+    def build(cls, doc_id: str, transaction_id: str, trx_nro: str, pk_store: str, pk_terminal: str,
+              pk_transaction_no: int, body: dict, trx_rcp: str, status: str, trx_doc_type: str,
+              note: str) -> 'Transaction':
         """Builds a Transaction instance.
 
         Args:
-            id (str): Transaction ID
+            doc_id (str): Document ID.
+            transaction_id (str): Transaction ID
             trx_nro (str): Transaction number.
             pk_store (str): Store primary key.
             pk_terminal (str): Terminal primary key.
@@ -43,7 +46,7 @@ class Transaction(DomainEntity):
         """
         return cls(
             doc_id,
-            id,
+            transaction_id,
             trx_nro,
             pk_store,
             pk_terminal,
