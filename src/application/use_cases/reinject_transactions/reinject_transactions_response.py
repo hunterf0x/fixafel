@@ -19,9 +19,10 @@ class ReinjectedTransactionsResponse(ApplicationResponse):
         Returns:
             list[dict]: The list of transactions in JSON format.
         """
+        print(self.transactions)
         return [
             {
-                "TrxNro": trx.trxNro
+                "TrxNro": trx.trx_nro
             }
             for trx in self.transactions
         ]

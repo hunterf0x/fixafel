@@ -23,13 +23,13 @@ class GetTransactionResponse(ApplicationResponse):
         return {
             "_id": self.transaction.doc_id,
             "id": self.transaction.transaction_id,
-            "TrxNro": self.transaction.trxNro,
+            "TrxNro": self.transaction.trx_nro,
             "PK_Store": self.transaction.pk_store,
             "PK_Terminal": self.transaction.pk_terminal,
             "PK_TransactionNo": self.transaction.pk_transaction_no,
             "body": self.transaction.body,
-            "trxRcp": self.transaction.trxRcp,
+            "trxRcp": self.transaction.trx_rcp,
             "status": self.transaction.status,
-            "trxDocType": self.transaction.trxDocType,
+            "trxDocType": self.transaction.trx_doc_type,
             "note": self.transaction.note
         }

@@ -11,14 +11,14 @@ class Transaction(DomainEntity):
         super().__init__()
         self.doc_id = doc_id
         self.transaction_id = transaction_id
-        self.trxNro = trx_nro
+        self.trx_nro = trx_nro
         self.pk_store = pk_store
         self.pk_terminal = pk_terminal
         self.pk_transaction_no = pk_transaction_no
         self.body = body
-        self.trxRcp = trx_rcp
+        self.trx_rcp = trx_rcp
         self.status = status
-        self.trxDocType = trx_doc_type
+        self.trx_doc_type = trx_doc_type
         self.note = note
 
 
@@ -68,5 +68,5 @@ class Transaction(DomainEntity):
             bool: True if both instances are equal, False otherwise.
         """
         if isinstance(other, Transaction):
-            return self.trxNro == other.trxNro
+            return self.trx_nro == other.trx_nro
         return False

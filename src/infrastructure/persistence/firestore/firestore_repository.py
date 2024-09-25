@@ -4,6 +4,7 @@ import logging
 from types import NoneType
 from typing import Optional
 
+from google.cloud.exceptions import GoogleCloudError
 from google.cloud.firestore_v1 import FieldFilter
 
 from domain.trx_repository import TrxRepository
@@ -51,7 +52,8 @@ class FirestoreRepository(TrxRepository):
         """
         data: dict = {}
         try:
-            documents = self.__db.collection('salesTrxCo').where(filter=FieldFilter(attr, '==', transaction_param)).limit(1).get()
+            documents = self.__db.collection('salesTrxCo').where(
+                filter=FieldFilter(attr, '==', transaction_param)).limit(1).get()
 
             if not documents:
                 return None
@@ -60,8 +62,10 @@ class FirestoreRepository(TrxRepository):
                 data = doc.to_dict()
                 data['doc_id'] = doc.id
                 print(f"doc: {doc}")
-                print(f"Datos del documento: {data.get('id')}")
+                print(f"Datos del documento: {data.get('TrxNro')}")
                 print(f"Datos del documento: {data}")
+        except GoogleCloudError as e:
+            self.logger.error("Error when searching for transaction: %s", e)
         except Exception  as e:
             self.logger.exception("Error when searching for transaction: %s", e, exc_info=True)
 
@@ -94,8 +98,10 @@ class FirestoreRepository(TrxRepository):
                     data = doc.to_dict()
                     data['doc_id'] = doc.id
                     transactions.append(self.__trx_parser.to_domain_object(data))
+            except GoogleCloudError as e:
+                self.logger.error("Error when searching for transaction: %s", e)
             except Exception as e:
-                print(f"Error al buscar la transacción: {e}")
+                self.logger.exception("Error when searching for transaction: %s", e, exc_info=True)
 
         return None if not transactions else transactions
 
@@ -110,16 +116,18 @@ class FirestoreRepository(TrxRepository):
             Transaction | None: The updated transaction or None if the document does not exist.
         """
         doc_ref = self.__db.collection('salesTrxCo').document(doc_id)
+        transaction = None
         try:
             if not doc_ref.get().exists:
                 print(f"El documento con ID {doc_id} no existe.")
                 return None
             doc_ref.update(attributes)
-            trx = doc_ref.get().to_dict()
-            trx['_doc_id'] = doc_ref.id
-            print(f"Transacción actualizada: {trx}")
+            transaction = doc_ref.get().to_dict()
+            transaction['doc_id'] = doc_ref.id
+            self.logger.info(f"Transaction {doc_id} has been updated.")
+        except GoogleCloudError as e:
+            self.logger.error("Error when updating transaction: %s", e)
         except Exception as e:
-            print(f"Error al actualizar la transacción: {e}")
+            self.logger.exception("Error when updating transaction: %s", e, exc_info=True)
 
-        transaction = self.__trx_parser.to_domain_object(trx)
-        return transaction
+        return None if isinstance(transaction, NoneType) else self.__trx_parser.to_domain_object(transaction)

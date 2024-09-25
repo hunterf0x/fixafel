@@ -24,7 +24,7 @@ def handle_exception(e: Exception) -> Response:
             status=e.code,
             mimetype='application/json'
         )
-    logging.error(error_message)
+    logging.error(error_message, exc_info=True)
     return Response(
         response=json.dumps({
             "message": error_message,

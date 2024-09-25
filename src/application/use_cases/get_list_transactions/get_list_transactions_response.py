@@ -25,14 +25,14 @@ class GetListTransactionsResponse(ApplicationResponse):
             {
                 "_id": trx.doc_id,
                 "id": trx.transaction_id,
-                "TrxNro": trx.trxNro,
+                "TrxNro": trx.trx_nro,
                 "PK_Store": trx.pk_store,
                 "PK_Terminal": trx.pk_terminal,
                 "PK_TransactionNo": trx.pk_transaction_no,
                 "body": trx.body,
-                "trxRcp": trx.trxRcp,
+                "trxRcp": trx.trx_rcp,
                 "status": trx.status,
-                "trxDocType": trx.trxDocType,
+                "trxDocType": trx.trx_doc_type,
                 "note": trx.note
             }
             for trx in self.transactions

@@ -23,7 +23,13 @@ from domain.trx_not_found_error import TrxNotFoundError
 class TrxController(BaseController):
     """Controller for handling transaction-related HTTP routes."""
 
-    def __init__(self, get_transaction: GetTransactionUseCase, get_list_transactions: GetListTransactionsUseCase, reinject_transactions: ReinjectTransactionsUseCase, logger: logging.Logger):
+    def __init__(
+            self,
+            get_transaction: GetTransactionUseCase,
+            get_list_transactions: GetListTransactionsUseCase,
+            reinject_transactions: ReinjectTransactionsUseCase,
+            logger: logging.Logger
+            ):
         """Initialize the TrxController with the given use cases.
 
         Args:
@@ -88,7 +94,7 @@ class TrxController(BaseController):
             return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
         except Exception as e:
             if isinstance(e, TrxNotFoundError):
-                self.logger.error(e)
+                self.logger.error(e, exc_info=True)
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
