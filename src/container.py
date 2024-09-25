@@ -11,7 +11,7 @@ from application.use_cases.get_list_transactions.get_list_transactions import Ge
 from application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
 from application.use_cases.reinject_transactions.reinject_transactions import ReinjectTransactionsUseCase
 from infrastructure.config.config import app_config
-from infrastructure.http.trx_controller import TrxController
+from infrastructure.http.transaction_controller import TrxController
 from infrastructure.logger.logger_config import get_logger
 from infrastructure.persistence.firestore.firestore_handler import FirestoreHandler
 from infrastructure.persistence.firestore.firestore_parser import FirestoreParser

@@ -14,6 +14,7 @@ from application.use_cases.get_list_transactions.get_list_transactions_command i
 from application.use_cases.get_transaction.get_transaction import GetTransactionUseCase
 from application.use_cases.get_transaction.get_transaction_command import GetTransactionCommand
 from infrastructure.http.contracts.get_transactions_request_contract import GetTransactionsRequestContract
+from infrastructure.http.contracts.reinject_transactions_request_contract import ReInjectTransactionsRequestContract
 from infrastructure.http.validator.request_validator import validate_request_body
 from infrastructure.http.base_controller import BaseController
 
@@ -43,24 +44,6 @@ class TrxController(BaseController):
         self.__reinject_transactions = reinject_transactions
         self.logger = logger
 
-    @validate_request_body(request, request_contract=GetTransactionsRequestContract)
-    def get_trxs_route(self):
-        """Handle the route for getting a list of transactions.
-
-        Returns:
-            Response: A Flask response object with the list of transactions.
-        """
-        body = request.get_json()
-        try:
-            command = GetListTransactionsCommand(body['list'])
-            response: ApplicationResponse = self.__get_list_transactions.execute(command)
-            return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
-        except Exception as e:
-            if isinstance(e, TrxNotFoundError):
-                self.logger.error(e)
-                return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
-            raise e
-
     def get_trx_route(self, transaction_find: str):
         """Handle the route for getting a single transaction.
 
@@ -81,7 +64,26 @@ class TrxController(BaseController):
                 return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
             raise e
 
-    def reinject_trxs_route(self):
+    @validate_request_body(request, request_contract=GetTransactionsRequestContract)
+    def get_trxs_route(self):
+        """Handle the route for getting a list of transactions.
+
+        Returns:
+            Response: A Flask response object with the list of transactions.
+        """
+        body = request.get_json()
+        try:
+            command = GetListTransactionsCommand(body['list'])
+            response: ApplicationResponse = self.__get_list_transactions.execute(command)
+            return Response(response=json.dumps(response.to_json()), status=200, mimetype='application/json')
+        except Exception as e:
+            if isinstance(e, TrxNotFoundError):
+                self.logger.error(e)
+                return Response(response=json.dumps({'message': e.args[0]}), status=404, mimetype='application/json')
+            raise e
+
+    @validate_request_body(request, request_contract=ReInjectTransactionsRequestContract)
+    def re_inject_trxs_route(self):
         """Handle the route for reinjecting a list of transactions.
 
         Returns:
@@ -103,7 +105,7 @@ class TrxController(BaseController):
         self.__routes = Blueprint('trx_controller', __name__)
         self.__routes.add_url_rule('/get/<transaction_find>', 'get_trx_route', self.get_trx_route, methods=['GET'])
         self.__routes.add_url_rule('/get_list', 'get_trxs_route', self.get_trxs_route, methods=['POST'])
-        self.__routes.add_url_rule('/reinject', 'reinject_trxs_route', self.reinject_trxs_route, methods=['POST'])
+        self.__routes.add_url_rule('/reinject', 're_inject_trxs_route', self.re_inject_trxs_route, methods=['POST'])
 
     def routes(self) -> Any:
         """Return the routes for the TrxController.
